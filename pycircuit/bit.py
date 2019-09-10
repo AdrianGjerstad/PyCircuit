@@ -12,6 +12,27 @@ class Bit:
 
         self.value = value
 
+    def get(self):
+        if self.value in [Bit.UNDEFINED, Bit.SHORT]:
+            if self.value == Bit.UNDEFINED:
+                return "undefined"
+            else:
+                return "short"
+
+        return str(self.value)
+
+    def set(self):
+        self.value = Bit.HIGH
+
+    def reset(self):
+        self.value = Bit.LOW
+
+    def set_bit(self, bit=UNDEFINED):
+        if bit not in [Bit.HIGH, Bit.LOW, Bit.SHORT, Bit.UNDEFINED]:
+            raise ValueError("Unknown Bit value given")
+
+        self.value = bit
+
     def __and__(self, other):
         if not isinstance(other, Bit):
             raise TypeError("unsupported operand type(s) for &: 'Bit' and '"
