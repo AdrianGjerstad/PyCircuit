@@ -33,6 +33,29 @@ class BitVector:
     def reset(self, idx):
         self.vector[idx].reset()
 
+    def __getitem__(self, idx):
+        return self.vector[idx].copy()
+
+    def __len__(self):
+        return self.length
+
+    def __contains__(self, other):
+        term = None
+        if isinstance(other, Bit):
+            term = other.value
+        elif isinstance(other, int):
+            term = other
+        else:
+            raise TypeError("unsupported operand type(s) for in: '" +
+                            type(other).__name__ + "'" +
+                            " and 'BitVector'")
+
+        for i in range(self.length):
+            if self.vector[i].value == term:
+                return True
+
+        return False
+
     def __and__(self, other):
         if not isinstance(other, BitVector):
             raise TypeError("unsupported operand type(s) for &: 'BitVector'" +

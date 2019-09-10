@@ -10,7 +10,7 @@ class Pin:
     PUBLIC_READ = 0b01
     PUBLIC_WRITE = 0b10
 
-    def __init__(self, io_flags=0b11):
+    def __init__(self, io_flags=0b00):
         self.value = Bit()
         self.io_flags = io_flags
 
