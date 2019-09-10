@@ -106,3 +106,6 @@ class Bit:
             return "[DATA UNKNOWN]"
 
         return "Bit(" + result + ")"
+
+    def copy(self):
+        return Bit(self.value)

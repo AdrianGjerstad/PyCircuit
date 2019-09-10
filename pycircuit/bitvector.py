@@ -146,3 +146,6 @@ class BitVector:
         result += ")"
 
         return result
+
+    def copy(self):
+        return BitVector(self.vector.copy())
