@@ -5,8 +5,8 @@ from .pin import Pin
 
 # Base Integrated Circuit class
 class IC:
-    def __init__(self):
-        self.__generate__(0, 1)
+    def __init__(self, inputs, outputs):
+        self.__generate__(inputs, outputs)
 
     def __generate__(self, num_in, num_out):
         self.inputs = []
@@ -29,9 +29,9 @@ class IC:
 
     def run(self):
         for i in range(len(self.outputs)):
-            self.__calculate_pin__(i, self.inputs)
+            self.__calculate_pin__(i)
 
-    def __calculate_pin__(self, idx, input_vec):
+    def __calculate_pin__(self, idx):
         self.outputs[idx].write((~self.outputs[idx].read()).value, self.__output_keys__[idx])
 
     def read_pin(self, idx):
