@@ -24,11 +24,11 @@ class IC:
             self.__output_keys__.append(self.outputs[i].register())
             self.outputs[i].write(Bit.UNDEFINED, self.__output_keys__[i])
 
-    def connect(self, outpinidx, inppin):
-        self.outputs[outpinidx].connect(inppin)
+    def connect(self, outpinidx, ic, inppinidx):
+        self.outputs[outpinidx].connect(ic.inputs[inppinidx])
 
-    def disconnect(self, outpinidx, inppin):
-        self.outputs[outpinidx].disconnect(inppin)
+    def disconnect(self, outpinidx, ic, inppinidx):
+        self.outputs[outpinidx].disconnect(ic.inputs[inppinidx])
 
     def input(self, idx, inp):
         self.inputs[idx].write(inp)
@@ -40,5 +40,5 @@ class IC:
     def __calculate_pin__(self, idx):
         self.outputs[idx].write((~self.outputs[idx].read()).value, self.__output_keys__[idx])
 
-    def read_pin(self, idx):
+    def read(self, idx):
         return self.outputs[idx].read()

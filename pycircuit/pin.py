@@ -21,7 +21,7 @@ class Pin:
         total_pin_count += 1
         self.__private_pin_uid__ = int(total_pin_count)
 
-        self.connection = None
+        self.connection = []
 
     def register(self):
         if not self.__private_key_lockdown__:
@@ -32,13 +32,15 @@ class Pin:
     def write(self, value=Bit.LOW, key=None):
         if (self.io_flags & Pin.PUBLIC_WRITE) == Pin.PUBLIC_WRITE:
             self.value.set_bit(value)
-            if self.connection is not None:
-                self.connection.write(value)
+            if self.connection is not []:
+                for i in range(len(self.connection)):
+                    self.connection[i].write(value)
         else:
             if key == self.__private_key__:
                 self.value.set_bit(value)
-                if self.connection is not None:
-                    self.connection.write(value)
+                if self.connection is not []:
+                    for i in range(len(self.connection)):
+                        self.connection[i].write(value)
             else:
                 raise PermissionError("Pin.PUBLIC_WRITE is not active on this pin.")
 
@@ -52,11 +54,10 @@ class Pin:
                 raise PermissionError("Pin.PUBLIC_READ is not active on this pin.")
 
     def connect(self, other):
-        self.connection = other
+        self.connection.append(other)
 
     def disconnect(self, other):
-        if other == self.connection:
-            self.connection = None
+        self.connection.remove(other)
 
     def __repr__(self):
         result = "Pin("
