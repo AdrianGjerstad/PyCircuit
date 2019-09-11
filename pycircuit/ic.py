@@ -24,6 +24,12 @@ class IC:
             self.__output_keys__.append(self.outputs[i].register())
             self.outputs[i].write(Bit.UNDEFINED, self.__output_keys__[i])
 
+    def connect(self, outpinidx, inppin):
+        self.outputs[outpinidx].connect(inppin)
+
+    def disconnect(self, outpinidx, inppin):
+        self.outputs[outpinidx].disconnect(inppin)
+
     def input(self, idx, inp):
         self.inputs[idx].write(inp)
 

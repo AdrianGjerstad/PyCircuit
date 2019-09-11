@@ -19,6 +19,9 @@ class Pin:
 
         global total_pin_count
         total_pin_count += 1
+        self.__private_pin_uid__ = int(total_pin_count)
+
+        self.connection = None
 
     def register(self):
         if not self.__private_key_lockdown__:
@@ -29,9 +32,13 @@ class Pin:
     def write(self, value=Bit.LOW, key=None):
         if (self.io_flags & Pin.PUBLIC_WRITE) == Pin.PUBLIC_WRITE:
             self.value.set_bit(value)
+            if self.connection is not None:
+                self.connection.write(value)
         else:
             if key == self.__private_key__:
                 self.value.set_bit(value)
+                if self.connection is not None:
+                    self.connection.write(value)
             else:
                 raise PermissionError("Pin.PUBLIC_WRITE is not active on this pin.")
 
@@ -43,6 +50,13 @@ class Pin:
                 return self.value.copy()
             else:
                 raise PermissionError("Pin.PUBLIC_READ is not active on this pin.")
+
+    def connect(self, other):
+        self.connection = other
+
+    def disconnect(self, other):
+        if other == self.connection:
+            self.connection = None
 
     def __repr__(self):
         result = "Pin("
@@ -72,8 +86,8 @@ class Pin:
 
         result += "-rwd "
 
-        result += "0" * (16-(len(hex(total_pin_count))-2))
-        result += hex(total_pin_count)[2:]
+        result += "0" * (16-(len(hex(self.__private_pin_uid__))-2))
+        result += hex(self.__private_pin_uid__)[2:]
 
         return result
 
